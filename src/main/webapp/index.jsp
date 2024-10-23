@@ -16,6 +16,9 @@
   <tr>
     <td><a href="empresa?opcion=salario"> Mostrar Salario de un Empleado</a></td>
   </tr>
+  <tr>
+    <td><a href="empresa?opcion=buscar"> Buscar Empleado</a></td>
+</tr>
 </table>
 </body>
 </html>

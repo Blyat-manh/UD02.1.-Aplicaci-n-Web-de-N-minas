@@ -28,6 +28,6 @@
   </tr>
   </c:forEach>
  </table>
- <a href="/AplicacionWebdeNominas">Volver</a>
+ <a href="/Empresa">Volver</a>
 </body>
 </html>

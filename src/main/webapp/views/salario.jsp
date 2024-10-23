@@ -3,15 +3,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>Salario Empleado</title>
 </head>
 <body>
-
-<form action="empresa" method="post">
-  <c:set var="empleado" value="${empleado}"></c:set>
-  <input type="hidden" name="opcion" value="editar">
-  <input type="hidden" name="dni" value="${empleado.dni}">
- </form>
+    <h2>Buscar Empleado por DNI</h2>
+    <form action="empresa" method="post">
+    <label for="dni">DNI:</label>
+    <input type="text" id="dni" name="dni" required>
+    <input type="submit" value="Buscar">
+</form>
+    <a href="/Empresa">Volver</a>
 </body>
 </html>

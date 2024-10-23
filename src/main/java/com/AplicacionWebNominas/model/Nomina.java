@@ -7,4 +7,6 @@ public class Nomina {
 		int sueldo=SUELDO_BASE[e.getCategoria()]+5000*e.getAnyos();
 		return sueldo;
 	}
+	
+	
 }
