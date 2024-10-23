@@ -26,104 +26,170 @@ import com.AplicacionWebNominas.model.Nomina;
  */
 @WebServlet(description = "Administra peticiones para la tabla empleados", urlPatterns = { "/empresa" })
 public class EmpleadoController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public EmpleadoController() {
-        super();
-    }
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public EmpleadoController() {
+		super();
+	}
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String opcion = request.getParameter("opcion");
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String opcion = request.getParameter("opcion");
 
-        if (opcion.equals("listar")) {
-            EmpleadoDAO empleadoDAO = new EmpleadoDAO();
-            List<Empleado> lista = new ArrayList<>();
-            try {
-                lista = empleadoDAO.obtenerEmpleado();
-                for( Empleado e : lista) {
-                	System.out.println(e);
-                }
-                request.setAttribute("lista", lista);
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/listar.jsp");
-                requestDispatcher.forward(request, response);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                request.setAttribute("errorMessage", "Error al obtener la lista de empleados.");
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
-                requestDispatcher.forward(request, response);
-            }
-            System.out.println("Usted ha presionado la opción listar");
-        } else if (opcion.equals("salario")) {
-            String dni = request.getParameter("dni");
-            EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+		if (opcion.equals("listar")) {
+			EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+			List<Empleado> lista = new ArrayList<>();
+			try {
+				lista = empleadoDAO.obtenerEmpleado();
+				for (Empleado e : lista) {
+					System.out.println(e);
+				}
+				request.setAttribute("lista", lista);
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/listar.jsp");
+				requestDispatcher.forward(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				request.setAttribute("errorMessage", "Error al obtener la lista de empleados.");
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
+				requestDispatcher.forward(request, response);
+			}
+			System.out.println("Usted ha presionado la opción listar");
+		} else if (opcion.equals("salario")) {
+			String dni = request.getParameter("dni");
+			EmpleadoDAO empleadoDAO = new EmpleadoDAO();
 
-            try {
-                Empleado empleado = empleadoDAO.obtenerEmpleado(dni); 
-                Nomina nomina = new Nomina();
-                int salario = (empleado != null) ? nomina.sueldo(empleado) : 0;
+			try {
+				Empleado empleado = empleadoDAO.obtenerEmpleado(dni);
+				Nomina nomina = new Nomina();
+				int salario = (empleado != null) ? nomina.sueldo(empleado) : 0;
 
-                request.setAttribute("empleado", empleado);
-                request.setAttribute("salario", salario);
+				request.setAttribute("empleado", empleado);
+				request.setAttribute("salario", salario);
 
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/salario.jsp");
-                requestDispatcher.forward(request, response);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                request.setAttribute("errorMessage", "Error al obtener el empleado.");
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
-                requestDispatcher.forward(request, response);
-            }
-        } else if (opcion.equals("editar")) {
-            String dni = request.getParameter("dni");
-            EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/salario.jsp");
+				requestDispatcher.forward(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				request.setAttribute("errorMessage", "Error al obtener el empleado.");
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
+				requestDispatcher.forward(request, response);
+			}
+		} else if (opcion.equals("editar")) {
+			String dni = request.getParameter("dni");
+			EmpleadoDAO empleadoDAO = new EmpleadoDAO();
 
-            try {
-                Empleado empleado = empleadoDAO.obtenerEmpleado(dni);
-                request.setAttribute("empleado", empleado);
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/editarEmpleado.jsp");
-                requestDispatcher.forward(request, response);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                request.setAttribute("errorMessage", "Error al obtener el empleado.");
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
-                requestDispatcher.forward(request, response);
-            }
-            }
-        }
-                
-        	  
-    
-    
+			try {
+				Empleado empleado = empleadoDAO.obtenerEmpleado(dni);
+				request.setAttribute("empleado", empleado);
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/buscarEmpleado.jsp");
+				requestDispatcher.forward(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				request.setAttribute("errorMessage", "Error al obtener el empleado.");
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
+				requestDispatcher.forward(request, response);
+			}
+		}
+	}
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    
-        String dni = request.getParameter("dni");
-        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
-        List<Empleado> empleados = new ArrayList<>();
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String opcion = request.getParameter("opcion");
 
-        try {
-            empleados = empleadoDAO.buscarEmpleadosPorDNI(dni); 
-            
-            request.setAttribute("empleados", empleados);
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/procesarBusqueda.jsp");
-            requestDispatcher.forward(request, response);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            request.setAttribute("errorMessage", "Error al obtener los empleados.");
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
-            requestDispatcher.forward(request, response);
-        }
-    }
+		if (opcion.equals("buscar")) {
+			String dni = request.getParameter("dni");
+			EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+			List<Empleado> empleados = new ArrayList<>();
 
-    }
+			try {
+				empleados = empleadoDAO.buscarEmpleadosPorDNI(dni);
+
+				request.setAttribute("empleados", empleados);
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/procesarBusqueda.jsp");
+				requestDispatcher.forward(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				request.setAttribute("errorMessage", "Error al obtener los empleados.");
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
+				requestDispatcher.forward(request, response);
+			}
+		} else if (opcion.equals("editar")) {
+			String dni = request.getParameter("dni");
+			EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+			List<Empleado> empleados = new ArrayList<>();
+
+			try {
+				empleados = empleadoDAO.buscarEmpleadosPorDNI(dni);
+
+				request.setAttribute("empleados", empleados);
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/editarEmpleado.jsp");
+				requestDispatcher.forward(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				request.setAttribute("errorMessage", "Error al obtener los empleados.");
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
+				requestDispatcher.forward(request, response);
+			}
+		} else if (opcion.equals("ebuscar")) {
+		        String criterio = request.getParameter("criterio");
+		        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+		        List<Empleado> empleados = new ArrayList<>();
+
+		        try {
+		            empleados = empleadoDAO.buscarEmpleadosPorCriterios(criterio, null, null); 
+
+		            request.setAttribute("empleados", empleados); 
+		            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/buscarEmpleado.jsp");
+		            requestDispatcher.forward(request, response);
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		            request.setAttribute("errorMessage", "Error al obtener los empleados.");
+		            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
+		            requestDispatcher.forward(request, response);
+		        }
+		}else if (opcion.equals("actualizar")) {
+		    String dni = request.getParameter("dni");
+		    String nombre = request.getParameter("nombre");
+		    String sexo = request.getParameter("sexo");
+		    int categoria = Integer.parseInt(request.getParameter("categoria"));
+		    int anyos = Integer.parseInt(request.getParameter("anyos"));
+
+		    Empleado empleado = new Empleado();
+		    empleado.setDni(dni);
+		    empleado.setNombre(nombre);
+		    empleado.setSexo(sexo.charAt(0)); // Asegúrate de que sexo sea un char
+		    empleado.setCategoria(categoria);
+		    empleado.setAnyos(anyos);
+
+		    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+		    try {
+		        boolean actualizado = empleadoDAO.actualizarEmpleado(empleado);
+		        if (actualizado) {
+		            response.sendRedirect("empresa?opcion=listar"); // Redirige a la lista de empleados
+		        } else {
+		            request.setAttribute("errorMessage", "No se pudo actualizar el empleado.");
+		            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
+		            requestDispatcher.forward(request, response);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        request.setAttribute("errorMessage", "Error al actualizar el empleado.");
+		        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/error.jsp");
+		        requestDispatcher.forward(request, response);
+		    }
+		}
+
+	}
+
+}

@@ -1,23 +1,50 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
     <title>Buscar Empleado</title>
 </head>
 <body>
-    <h2>Buscar Empleado</h2>
+    <h1>Buscar Empleado</h1>
     <form action="empresa" method="post">
-    <input type="hidden" name="opcion" value="buscar">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" placeholder="Nombre parcial">
-    <label for="dni">DNI:</label>
-    <input type="text" id="dni" name="dni" placeholder="DNI parcial">
-    <label for="categoria">Categoría:</label>
-    <input type="text" id="categoria" name="categoria" placeholder="Categoría">
-    <input type="submit" value="Buscar">
-</form>
+        <input type="text" name="criterio" placeholder="Buscar por DNI, Nombre o Categoría" required />
+        <input type="hidden" name="opcion" value="ebuscar" />
+        <input type="submit" value="Buscar" />
+    </form>
 
-    <a href="/Empresa">Volver</a>
+    <c:if test="${not empty empleados}">
+        <h2>Resultados de la Búsqueda</h2>
+        <table border="1">
+            <tr>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Sexo</th>
+                <th>Categoría</th>
+                <th>Años</th>
+                <th>Acciones</th>
+            </tr>
+            <c:forEach var="empleado" items="${empleados}">
+                <tr>
+                    <td><c:out value="${empleado.nombre}"/></td>
+                    <td><c:out value="${empleado.dni}"/></td>
+                    <td><c:out value="${empleado.sexo}"/></td>
+                    <td><c:out value="${empleado.categoria}"/></td>
+                    <td><c:out value="${empleado.anyos}"/></td>
+                    <td>
+                        <form action="empresa" method="post">
+                            <input type="hidden" name="opcion" value="editar">
+                            <input type="hidden" name="dni" value="${empleado.dni}">
+                            <input type="submit" value="Editar">
+                        </form>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
+    
+    <c:if test="${empty empleados}">
+        <p>No se encontraron empleados.</p>
+    </c:if>
 </body>
 </html>

@@ -132,17 +132,41 @@ public class EmpleadoDAO {
 
 		    return listaEmpleados;
 		}
-		public void actualizarEmpleado(Empleado empleado) throws SQLException {
-		    String sql = "UPDATE empleado SET nombre=?, sexo=?, categoria=?, anyos=? WHERE dni=?";
-		    connection = obtenerConexion();
-		    statement = connection.prepareStatement(sql);
-		    statement.setString(1, empleado.getNombre());
-		    statement.setString(2, String.valueOf(empleado.getSexo()));
-		    statement.setInt(3, empleado.getCategoria());
-		    statement.setInt(4, empleado.getAnyos());
-		    statement.setString(5, empleado.getDni());
-		    statement.executeUpdate();
+		public boolean actualizarEmpleado(Empleado empleado) throws SQLException {
+		    String sql = null;
+		    boolean estadoOperacion = false;
+		    Connection connection = obtenerConexion();
+		    PreparedStatement statement = null;
+
+		    try {
+		        connection.setAutoCommit(false);
+		        sql = "UPDATE empleados SET nombre=?, sexo=?, categoria=?, anyos=? WHERE dni=?";
+		        statement = connection.prepareStatement(sql);
+
+		        statement.setString(1, empleado.getNombre());
+		        statement.setString(2, String.valueOf(empleado.getSexo())); // Asumiendo que sexo es char
+		        statement.setInt(3, empleado.getCategoria());
+		        statement.setInt(4, empleado.getAnyos());
+		        statement.setString(5, empleado.getDni());
+
+		        estadoOperacion = statement.executeUpdate() > 0;
+
+		        connection.commit();
+		    } catch (SQLException e) {
+		        if (connection != null) {
+		            connection.rollback();
+		        }
+		        e.printStackTrace();
+		    } finally {
+		        if (statement != null) {
+		            statement.close();
+		        }
+		        connection.close();
+		    }
+
+		    return estadoOperacion;
 		}
+
 
 	
 	private Connection obtenerConexion() throws SQLException {
