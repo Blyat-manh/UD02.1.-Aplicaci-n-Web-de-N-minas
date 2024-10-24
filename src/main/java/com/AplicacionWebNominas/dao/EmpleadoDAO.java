@@ -91,32 +91,22 @@ public class EmpleadoDAO {
 
 		    return listaEmpleados;
 		}
-		public List<Empleado> buscarEmpleadosPorCriterios(String dni, String nombre, String categoria) throws SQLException {
+		public List<Empleado> buscarEmpleadosPorCriterios(String criterio) throws SQLException {
 		    List<Empleado> listaEmpleados = new ArrayList<>();
-		    StringBuilder sql = new StringBuilder("SELECT * FROM empleado WHERE 1=1");
-		    
-		    if (dni != null && !dni.isEmpty()) {
-		        sql.append(" AND dni LIKE ?");
-		    }
-		    if (nombre != null && !nombre.isEmpty()) {
-		        sql.append(" AND nombre LIKE ?");
-		    }
-		    if (categoria != null && !categoria.isEmpty()) {
-		        sql.append(" AND categoria LIKE ?");
-		    }
+		    StringBuilder sql = new StringBuilder("SELECT * FROM empleado WHERE ");
+
+		    sql.append("(dni LIKE ? OR ");
+		    sql.append("nombre LIKE ? OR ");
+		    sql.append("sexo LIKE ? OR ");
+		    sql.append("categoria LIKE ? OR ");
+		    sql.append("anyos LIKE ?)");
 
 		    connection = obtenerConexion();
 		    statement = connection.prepareStatement(sql.toString());
 
-		    int index = 1;
-		    if (dni != null && !dni.isEmpty()) {
-		        statement.setString(index++, "%" + dni + "%");
-		    }
-		    if (nombre != null && !nombre.isEmpty()) {
-		        statement.setString(index++, "%" + nombre + "%");
-		    }
-		    if (categoria != null && !categoria.isEmpty()) {
-		        statement.setString(index++, "%" + categoria + "%");
+		    String searchParam = "%" + criterio + "%";
+		    for (int i = 1; i <= 5; i++) {
+		        statement.setString(i, searchParam);
 		    }
 
 		    ResultSet resultSet = statement.executeQuery();
@@ -132,6 +122,7 @@ public class EmpleadoDAO {
 
 		    return listaEmpleados;
 		}
+
 		public boolean actualizarEmpleado(Empleado empleado) throws SQLException {
 		    String sql = null;
 		    boolean estadoOperacion = false;

@@ -8,5 +8,6 @@
 </head>
 <body>
  <h1>Error por null</h1>
+ <a href="/Empresa">Volver</a>
 </body>
 </html>
