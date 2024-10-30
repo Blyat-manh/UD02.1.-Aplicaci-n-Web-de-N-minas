@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.AplicacionWebNominas.model.Empleado"%>
+<%@ page import="com.AplicacionWebNominas.model.Nomina"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -113,24 +114,22 @@ a.pagination:hover {
     <%
         List<Empleado> empleados = (List<Empleado>) request.getAttribute("empleados");
         if (empleados != null && !empleados.isEmpty()) {
+            Nomina nomina = new Nomina(); // Create instance of Nomina
     %>
         <table border="1">
             <tr>
                 <th>Nombre</th>
                 <th>DNI</th>
-                <th>Sexo</th>
-                <th>Categoría</th>
-                <th>Años en la empresa</th>
+                <th>Salario</th>
             </tr>
             <%
             for (Empleado empleado : empleados) {
+                int salario = nomina.sueldo(empleado); // Calculate salary
             %>
             <tr>
                 <td><%= empleado.getNombre() %></td>
                 <td><%= empleado.getDni() %></td>
-                <td><%= empleado.getSexo() %></td>
-                <td><%= empleado.getCategoria() %></td>
-                <td><%= empleado.getAnyos() %></td>
+                <td><%= salario %></td>
             </tr>
             <%
             }
