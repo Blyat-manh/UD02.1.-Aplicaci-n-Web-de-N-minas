@@ -1,8 +1,8 @@
 package com.AplicacionWebNominas.model;
 
-public class Empleado extends Persona{
-	
-	public int categoria, anyos;
+public class Persona {
+	public String nombre, dni;
+	public char sexo;
 	public String getNombre() {
 		return nombre;
 	}
@@ -21,28 +21,15 @@ public class Empleado extends Persona{
 	public void setSexo(char sexo) {
 		this.sexo = sexo;
 	}
-	public int getCategoria() {
-		return categoria;
-	}
-	public void setCategoria(int categoria) {
-		this.categoria = categoria;
-	}
-	public int getAnyos() {
-		return anyos;
-	}
-	public void setAnyos(int anyos) {
-		this.anyos = anyos;
-	}
-	public Empleado(String nombre, String dni, char sexo, int categoria, int anyos) {
+	public Persona(String nombre, String dni, char sexo) {
 		super();
 		this.nombre = nombre;
 		this.dni = dni;
 		this.sexo = sexo;
-		this.categoria = categoria;
-		this.anyos = anyos;
 	}
-	public Empleado() {
+	public Persona() {
 		super();
 	}
+	
 	
 }
