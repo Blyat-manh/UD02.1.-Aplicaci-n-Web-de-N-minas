@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.AplicacionWebNominas.model.Empleado"%>
-<%@ page import="com.AplicacionWebNominas.model.Nomina"%>
+<%@ page import="com.AplicacionWebNominas.model.NominaService"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -112,9 +112,11 @@ a.pagination:hover {
 <body>
     <h1>Resultados de Búsqueda</h1>
     <%
-        List<Empleado> empleados = (List<Empleado>) request.getAttribute("empleados");
-        if (empleados != null && !empleados.isEmpty()) {
-            Nomina nomina = new Nomina(); // Create instance of Nomina
+    
+
+            List<Empleado> empleados = (List<Empleado>) request.getAttribute("empleados");
+            if (empleados != null && !empleados.isEmpty()) {
+                NominaService nomina = new NominaService(); // Create instance of Nomina
     %>
         <table border="1">
             <tr>

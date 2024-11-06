@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.AplicacionWebNominas.dao.EmpleadoDAO;
 import com.AplicacionWebNominas.model.Empleado;
-import com.AplicacionWebNominas.model.Nomina;
+import com.AplicacionWebNominas.model.NominaService;
 
 /**
  * Servlet implementation class EmpleadoController
@@ -67,8 +67,8 @@ public class EmpleadoController extends HttpServlet {
 
 			try {
 				Empleado empleado = empleadoDAO.obtenerEmpleado(dni);
-				Nomina nomina = new Nomina();
-				int salario = (empleado != null) ? nomina.sueldo(empleado) : 0;
+				NominaService nominaService = new NominaService();
+				int salario = (empleado != null) ? nominaService.sueldo(empleado) : 0;
 
 				request.setAttribute("empleado", empleado);
 				request.setAttribute("salario", salario);

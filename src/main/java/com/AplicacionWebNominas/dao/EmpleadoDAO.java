@@ -7,17 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.AplicacionWebNominas.conexion.Conexion;
+import com.AplicacionWebNominas.conexion.MDBConection;
 import com.AplicacionWebNominas.model.Empleado;
-import com.AplicacionWebNominas.model.Nomina;
+import com.AplicacionWebNominas.model.NominaService;
 
 
 public class EmpleadoDAO {
 	private Connection connection;
 	private PreparedStatement statement;
 	private boolean estadoOperacion;
-	
-	
 	
 		public List<Empleado> obtenerEmpleado() throws SQLException {
 			ResultSet resultSet = null;
@@ -161,6 +159,6 @@ public class EmpleadoDAO {
 
 	
 	private Connection obtenerConexion() throws SQLException {
-		return Conexion.getConnection();
+		return MDBConection.getConnection();
 	}
 }
